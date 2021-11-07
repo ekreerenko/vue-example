@@ -1,9 +1,17 @@
 <template>
-  <div class="title">TodoList</div>
-  <div v-for="todo in todos">
-    <TodoItem :key="todo.id" :todo="todo" />
+  <div>
+    <div class="title">TodoList</div>
+    <div class="buttons-wrapper">
+      <button @click="onAddTodoClick">Add todo</button>
+    </div>
+    <div class="items-wrapper">
+      <TodoItem
+        v-for="todo in todos"
+        :key="todo.id"
+        :todo="todo"
+      />
+    </div>
   </div>
-<!--  <TodoItem />-->
 </template>
 
 <script lang="ts">
@@ -23,7 +31,6 @@ const DATA_TEST = [
   },
 ];
 
-console.log('Todos -->');
 export default Vue.extend({
   name: 'Todos',
   data() {
@@ -34,11 +41,28 @@ export default Vue.extend({
   components: {
     TodoItem,
   },
-  methods: {},
+  methods: {
+    onAddTodoClick() {
+      const maxItemId = this.todos.reduce((acc: number, item) => {
+        if (item.id > acc) {
+          // eslint-disable-next-line
+          acc = item.id;
+        }
+        return acc;
+      }, 0);
+      this.todos.push({ id: maxItemId, title: '', checked: false });
+    },
+  },
 });
 </script>
 <style scoped lang="scss">
   .title {
-    background-color: red;
+    border: 1px solid blue;
+  }
+  .items-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 </style>

@@ -23,7 +23,7 @@ const routes: Array<RouteConfig> = [
     component: About,
   },
   {
-    path: 'todos',
+    path: '/todos',
     name: 'Todos',
     component: Todos,
   },
