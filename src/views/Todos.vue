@@ -8,7 +8,8 @@
       <TodoItem
         v-for="todo in todos"
         :key="todo.id"
-        v-bind="todo"
+        :todo="todo"
+        :onDeleteTodo="onDeleteTodo"
       />
     </div>
   </div>
@@ -17,8 +18,14 @@
 <script lang="ts">
 import Vue from 'vue';
 import TodoItem from '@/components/TodoItem/TodoItem.vue';
-// import TodoItem from '../components/TodoItem/TodoItem.vue';
-const DATA_TEST = [
+
+export interface Todo {
+  id: number,
+  title: string,
+  checked: boolean,
+}
+
+const DATA_TEST: Todo[] = [
   {
     id: 0,
     title: 'first',
@@ -44,13 +51,20 @@ export default Vue.extend({
   methods: {
     onAddTodoClick() {
       const maxItemId = this.todos.reduce((acc: number, item) => {
-        if (item.id > acc) {
+        if (item.id >= acc) {
           // eslint-disable-next-line
-          acc = item.id;
+          acc = item.id + 1;
         }
         return acc;
       }, 0);
+      console.log('maxItemId', maxItemId);
       this.todos.push({ id: maxItemId, title: '', checked: false });
+    },
+    onDeleteTodo(id: number) {
+      console.log('onDeleteTodo', id, this.$data.todos.filter((item: Todo) => item.id !== id));
+      return Number.isFinite(id)
+        ? this.$data.todos.filter((item: Todo) => item.id !== id)
+        : this.$data.todos;
     },
   },
 });

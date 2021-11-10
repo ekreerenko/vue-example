@@ -5,7 +5,7 @@
     <div @dblclick="onTextDoubleClick">
       {{todo.title}}
     </div>
-    <button @click="OnDeleteClick">Delte</button>
+    <button @click="onDeleteClick(todo.id)">Delte</button>
   </div>
 </template>
 
@@ -25,6 +25,10 @@ export default Vue.extend({
         };
       },
     },
+    onDeleteTodo: {
+      type: Function,
+      required: true,
+    },
   },
   data() {
     return {
@@ -32,7 +36,7 @@ export default Vue.extend({
     };
   },
   mounted() {
-    console.log('mounted', this.todo);
+    console.log('mounted', this.$props);
   },
   computed: {
     // shouldRender() {
@@ -46,8 +50,9 @@ export default Vue.extend({
     onTextDoubleClick(event: any) {
       console.log('onTextDoubleClick', event);
     },
-    OnDeleteClick() {
+    onDeleteClick(id: number) {
       console.log('OnDeleteClick');
+      this.$props.onDeleteTodo(id);
     },
   },
 });
